@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%= id %>번 자세히 보여드릴게요! 
+    <p class="put">title수정!</p>
+    <p class="price">가격 수정</p>
+    <script>
+        const put = document.querySelector('.put');
+        const price = document.querySelector('.price');
+        const putPrice = 3999;
+        const title = 'hello'; //hello로 바꿀거임 title
+        put.addEventListener('click',()=>{
+            fetch(`/items/${title}`,{
+                method : 'PUT',
+                headers : {
+                    'Content-type' : 'application/json',
+                },
+                body : JSON.stringify({
+                    title : `${title}`,
+                }), //요청자원 보냄!
+            })
+            .then(res => console.log(res))
+        })
+        
+        price.addEventListener('click',() => {
+            function pricePut(putPrice){
+                fetch(`/items/${putPrice}`,{
+                    // fetch api option, put delete ==> how to build rest api
+
+                    method : 'PUT',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body : JSON.stringify({
+                        price : `${putPrice}`,
+                        //price라는 변수에다가 값을 넣어서 보냄. 
+                        // 
+                    })
+                })
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+            }
+        })
+    </script>
+</body>
+</html>

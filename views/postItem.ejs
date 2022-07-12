@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 상품 만들어주세요! 를 html로 요청한다. -->
+    <!--
+        0. 상품 만드는 페이지 띄워주세요! 
+        1. 상품 만들어주세요 : POST : /items
+        2. 상품 검색 : GET : /items
+        3. id가 3번인 상품 검색 : GET /items/:id
+        이런식이야!
+    -->
+    <form action="/items" method="POST">
+        <label for="title">상품이름</label>
+        <input type="text" name="title" id="title"><br/>
+        <label for="content">상품설명</label>
+        <input type="text" name="content" id="content"><br />
+        <label for="price">상품가격</label>
+        <input type="text" name="price" id="price"><br />
+        <button type="submit">제출</button>
+    </form>
+</body>
+</html>

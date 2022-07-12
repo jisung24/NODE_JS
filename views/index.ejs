@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p class="item">상품1</p> <!-- 상품 click하면 id가 n번인 상품 자세히 보여줘! 
+    ( get : /items/:id ) -->
+    <p class="item">상품2</p>
+    <p class="item">상품3</p>
+    <form action="/items" method="get">
+        <!-- 내가 title로 검색할건데 똑같은 item list뽑아서 주세요! -->
+        <!-- 이건 fetch가 아니라 form html에서 api호출이 가능하다. -->
+    </form>
+    <script>
+        // id가 n번인 item get요청해주세요! 이런 요청이 가능하다.
+        //front는 내 요청을 back에 보내고 back은 그걸 api 코드로 만들어서 들어준다.
+        const item = document.querySelectorAll('.item');
+        let id = [];
+        item.forEach((value,index) => {
+            value.addEventListener('click',()=>{
+                id.push(index + 1); //id배열에 쌓임! 
+                fetchAPI(id[index])
+            })
+        })
+
+        function fetchAPI(id){
+            fetch(`/items/${id}`) // id가 id번인 상품 보여줘! => 백에 이 api있지?
+            .then(()=>{
+                window.location.href = `/items/${id}`; //api를 적어준다!
+            })
+        }
+        // 1. id가 n번인 상품 보여주세요! GET /items/:id => fetch로!
+        // 2. 서버 api작성한다. 
+        // 3. api랑 page이름도 최대한 연관을 시키자!(item페이지면 itempage..등등!)
+    </script>
+</body>
+</html>
