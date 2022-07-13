@@ -5,37 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .item__container{
+            width : 100vw;
+            min-height : 100vh;
+            display : flex;
+            flex-direction: column;
+        }
+        .item{
+            border : 2px solid black;
+            background-color: palegreen;
+        }
+        button{
+            width : 50%;
+
+        }
+    </style>
 </head>
 <body>
-    <p class="item">상품1</p> <!-- 상품 click하면 id가 n번인 상품 자세히 보여줘! 
-    ( get : /items/:id ) -->
-    <p class="item">상품2</p>
-    <p class="item">상품3</p>
-    <form action="/items" method="get">
-        <!-- 내가 title로 검색할건데 똑같은 item list뽑아서 주세요! -->
-        <!-- 이건 fetch가 아니라 form html에서 api호출이 가능하다. -->
-    </form>
+    <h1>상품 보여주기!</h1>
+    <div class="item__container">
+        <% for(let i=0; i<items.length; i++){ %>
+            <div class="item" data-id="<%= items[i]._id %>">
+                <p class="title">이름 : <%= items[i].title %></p>
+                <p class="content">설명 : <%= items[i].content %></p>
+                <p class="price">가격 : <%= items[i].price %></p>
+                <button class="deleteButton">삭제</button>
+                <!-- 내가 id를 보낸 상품을 삭제하는 api도 짜야지! -->
+            </div>
+        <% } %>
+    </div>
+
     <script>
-        // id가 n번인 item get요청해주세요! 이런 요청이 가능하다.
-        //front는 내 요청을 back에 보내고 back은 그걸 api 코드로 만들어서 들어준다.
         const item = document.querySelectorAll('.item');
-        let id = [];
+        const itemID = [];
+        
         item.forEach((value,index) => {
+            itemID.push(value.getAttribute('data-id')); //id를 다 넣었어!
+            //클릭한 상품 id를 보내고 그걸 삭제시키는 fetch를 보내자!
+            //DELETE : /items/:id => req.params
             value.addEventListener('click',()=>{
-                id.push(index + 1); //id배열에 쌓임! 
-                fetchAPI(id[index])
+                alert(`선택상품 id >> ${itemID[index]}`)
+                deleteFetch(itemID[index]);
             })
         })
-
-        function fetchAPI(id){
-            fetch(`/items/${id}`) // id가 id번인 상품 보여줘! => 백에 이 api있지?
-            .then(()=>{
-                window.location.href = `/items/${id}`; //api를 적어준다!
+        function deleteFetch(id){
+            fetch(`/items/${id}`, {
+                method : 'DELETE',
+                //그냥 삭제하기를 원하는 상품의 id만 적어주면 돼!
+                headers: {
+                    "Content-type": "application/json",
+                },
             })
+                .then(() => {
+                    window.location.href = '/index';
+                })
+                .catch(err => console.log(err))
         }
-        // 1. id가 n번인 상품 보여주세요! GET /items/:id => fetch로!
-        // 2. 서버 api작성한다. 
-        // 3. api랑 page이름도 최대한 연관을 시키자!(item페이지면 itempage..등등!)
     </script>
 </body>
 </html>

@@ -5,7 +5,7 @@ const router = express.Router();
 const Item = require('../models/item.js');
 
 router.get('/index',(req,res) => {
-    res.render('postItem.ejs'); //아이템 만들어주는 페이지 만들어주세요!
+    res.render('postItem.ejs');
 })
 router.get('/:id',(req,res)=>{
     console.log(`id가 ${req.params.id}인 상품 볼게요!`);
@@ -24,12 +24,21 @@ router.post('/',(req,res) => { //아이템 하나 만들어주세요! => 프론�
     .save()
     .then(() => {
         console.log(`db에 값 저장!`);
+        return res.redirect('/index');
     })
+    .catch(err => console.log(err))
 })
-router.put('/:title',(req,res)=>{
-    console.log(`수정된 title >> ${req.params.title}`);
-})
-router.put('/:price',(req,res) => {
-    console.log(`수정된 가격 >> ${req.params.price}`);
-})
+router.delete('/:id',(req,res) => {
+    // id선택한 상품 삭제! 
+    
+    console.log(`삭제한 상품 >> ${req.params.id}`);
+    console.log(`삭제한 상품명 >> ${req.params.title}`);
+    Item.deleteOne({_id : req.params.id})
+    .then((item) => {
+        console.log(`${item}삭제완료!`);
+        res.render('index.ejs');
+        //다만 fetch로 요청했을 때는 redirect가 안 돼!
+        // 따라서 window.location.href까지 같이 써줘야돼! 
+    })
+}); 
 module.exports = router;
